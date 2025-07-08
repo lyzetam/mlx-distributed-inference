@@ -11,6 +11,12 @@ Run the provided script to install required packages and create a Python virtual
 source mlx-env/bin/activate
 ```
 
+Alternatively, install the same Python packages manually with:
+
+```bash
+pip install -r requirements.txt
+```
+
 The script installs Python, Git and OpenMPI (when `apt-get` is available), then creates a virtual environment and installs the Python dependencies (`mlx`, `mlx_lm`, `huggingface-hub`). It also copies `hosts.json` to `~/.mlx/hosts.json` and generates SSH keys if none are present.
 
 ## Usage
