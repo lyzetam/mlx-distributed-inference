@@ -24,7 +24,14 @@ source mlx-env/bin/activate
 pip install -r requirements.txt
 ```
 
-The script installs Python, Git and OpenMPI (when `apt-get` is available), then creates a virtual environment and installs the Python dependencies (`mlx`, `mlx_lm`, `huggingface-hub`). It also copies `hosts.json` to `~/.mlx/hosts.json` and generates SSH keys if none are present.
+The script installs Python, Git and OpenMPI (when `apt-get` or Homebrew is available), then creates a virtual environment and installs the Python dependencies (`mlx`, `mlx_lm`, `huggingface-hub`). It also copies `hosts.json` to `~/.mlx/hosts.json` and generates SSH keys if none are present.
+
+On macOS install OpenMPI using [Homebrew](https://brew.sh/) with:
+
+```bash
+brew install openmpi
+```
+before running the script if it is not already present.
 
 ## Usage
 
