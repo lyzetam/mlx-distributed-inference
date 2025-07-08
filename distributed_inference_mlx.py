@@ -56,6 +56,11 @@ def shard_and_load(model_name: str):
         
         # Lazy load to figure out which weights we need
         model, _ = load_model(model_path, lazy=True, strict=False)
+        # Shard the layers for this rank
+        if hasattr(model, "pipeline"):
+            model.pipeline(group)
+        elif hasattr(model, "model") and hasattr(model.model, "pipeline"):
+            model.model.pipeline(group)
         
         # Figure out which files we need for the local shard
         with open(index_path, "r") as fid:
@@ -72,6 +77,10 @@ def shard_and_load(model_name: str):
         # Load and shard the model
         tokenizer = load_tokenizer(model_path)
         model, _ = load_model(model_path, lazy=True, strict=False)
+        if hasattr(model, "pipeline"):
+            model.pipeline(group)
+        elif hasattr(model, "model") and hasattr(model.model, "pipeline"):
+            model.model.pipeline(group)
         mx.eval(model.parameters())
     else:
         # Small model - each rank loads the full model
