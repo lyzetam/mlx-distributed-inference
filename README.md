@@ -56,3 +56,12 @@ specifies the SSH address and the IPs visible to the other hosts:
 
 Add one object per machine in the order you want them to appear. Use the IP
 addresses reachable by the other nodes for the `ips` field.
+
+## Running Tests
+
+Install the requirements and then execute `pytest` from the repository root:
+
+```bash
+pip install -r requirements.txt pytest
+pytest
+```
