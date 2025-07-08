@@ -111,17 +111,35 @@ def main():
         default="TinyLlama/TinyLlama-1.1B-Chat-v1.0",
         help="Model identifier to load"
     )
+    parser.add_argument(
+        '--chat-template', type=str,
+        help=(
+            'Optional chat template string or path to a file containing the '
+            'template. If provided, it will override any template shipped with '
+            'the tokenizer.'
+        ),
+    )
     # parser.add_argument(
     #     '--temperature', type=float, default=0.7,
     #     help="Sampling temperature"
     # )
     args = parser.parse_args()
-    
+
     # Combine words into full prompt
     prompt = ' '.join(args.prompt)
+
+    chat_template = None
+    if args.chat_template:
+        template_path = Path(args.chat_template)
+        if template_path.exists():
+            chat_template = template_path.read_text()
+        else:
+            chat_template = args.chat_template
     
     # Load and shard model
     model, tokenizer, group = shard_and_load(args.model_name)
+    if chat_template:
+        tokenizer.chat_template = chat_template
     rank = group.rank()
     size = group.size()
     
@@ -132,10 +150,13 @@ def main():
     
     # Format prompt for chat models
     messages = [{"role": "user", "content": prompt}]
-    formatted_prompt = tokenizer.apply_chat_template(
-        messages, 
-        add_generation_prompt=True
-    )
+    if getattr(tokenizer, "chat_template", None):
+        formatted_prompt = tokenizer.apply_chat_template(
+            messages,
+            add_generation_prompt=True
+        )
+    else:
+        formatted_prompt = prompt
     
     # Generate response
     rprint(f"\nProcessing prompt: '{prompt}'")
