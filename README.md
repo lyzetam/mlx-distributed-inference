@@ -42,6 +42,30 @@ mpirun --hostfile hosts.json -np 3 python distributed_inference_mlx.py "Your pro
 
 Replace the prompt with any text you would like to send to the model.
 
+Example:
+
+```bash
+mlx.launch --hosts 10.85.100.221,10.85.100.222 \
+  python3 distributed_inference_mlx.py \
+    --max-tokens 1280 \
+    --model-name mlx-community/DeepSeek-R1-Qwen3-0528-8B-4bit-AWQ \
+    "What is the relativity theory"
+```
+
+Example output:
+
+```
+Generation time: 58.3s
+Prompt: 14 tokens, 62.7 tokens-per-sec
+Generation: 315 tokens, 22.1 tokens-per-sec
+Peak memory: 4.96 GB
+```
+
+### Benchmarks
+
+Running on two Mac mini M4 machines (10 cores, 16 GB RAM) peaks at roughly
+5 GB of memory per host and generates around 22 tokens per second.
+
 ## `hosts.json`
 
 The `hosts.json` file lists the machines participating in a run. Each entry
