@@ -2,6 +2,11 @@
 
 This repository contains a small example for running distributed inference with [MLX](https://github.com/ml-explore/mlx).
 
+## Requirements
+
+Requires **Python 3.10+**. All Python dependencies are listed in
+`requirements.txt`.
+
 ## Environment Setup
 
 Run the provided script to install required packages and create a Python virtual environment:
@@ -10,10 +15,12 @@ Run the provided script to install required packages and create a Python virtual
 ./setup_env.sh
 source mlx-env/bin/activate
 ```
-
-Alternatively, install the same Python packages manually with:
+Alternatively, create your own virtual environment and install the
+dependencies with:
 
 ```bash
+python3 -m venv mlx-env
+source mlx-env/bin/activate
 pip install -r requirements.txt
 ```
 
@@ -34,3 +41,18 @@ mpirun --hostfile hosts.json -np 3 python distributed_inference_mlx.py "Your pro
 ```
 
 Replace the prompt with any text you would like to send to the model.
+
+## `hosts.json`
+
+The `hosts.json` file lists the machines participating in a run. Each entry
+specifies the SSH address and the IPs visible to the other hosts:
+
+```json
+[
+  {"ssh": "host1.example.com", "ips": ["10.0.0.1"]},
+  {"ssh": "host2.example.com", "ips": ["10.0.0.2"]}
+]
+```
+
+Add one object per machine in the order you want them to appear. Use the IP
+addresses reachable by the other nodes for the `ips` field.
