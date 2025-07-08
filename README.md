@@ -15,7 +15,6 @@ Run the provided script to install required packages and create a Python virtual
 ./setup_env.sh
 source mlx-env/bin/activate
 ```
-
 Alternatively, create your own virtual environment and install the
 dependencies with:
 
