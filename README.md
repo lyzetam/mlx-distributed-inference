@@ -96,3 +96,8 @@ Install the requirements and then execute `pytest` from the repository root:
 pip install -r requirements.txt pytest
 pytest
 ```
+
+## Troubleshooting
+
+If MPI fails to launch or nodes hang during initialization, ensure every machine uses the **exact same** project path. In one attempt the paths differed between systems, leading to hours of confusing errors and ultimately removing the supposed master node before noticing the mismatch.
+
