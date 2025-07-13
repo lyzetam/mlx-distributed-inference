@@ -1,3 +1,21 @@
+New Prompts using Config file
+
+# Example 1 - with hosts
+mlx.launch \
+  --hosts 10.85.100.220,10.85.100.221,10.85.100.222 \
+  python3 distributed_inference_mlx.py \
+    "What is the meaning of life?"
+
+# Example 2 - with hostfile
+mlx.launch \
+  --hostfile hosts.json \
+  --backend ring \
+  python3 distributed_inference_mlx.py \
+    "What is the meaning of life?"
+
+
+
+
 Make sure to CD and activate env:
 
 (mlx-env) mm@mm1 mlx-project
@@ -24,3 +42,12 @@ python3 distributed_inference_mlx.py \
 --max-tokens 32 \
 --model-name mlx-community/DeepSeek-R1-Qwen3-0528-8B-4bit-AWQ \
 "What is the meaning of life?"
+
+
+mlx.launch \
+  --hostfile hosts.json \
+  --backend ring \
+  python3 distributed_inference_mlx.py \
+    --max-tokens 128 \
+    --model-name mlx-community/DeepSeek-R1-Qwen3-0528-8B-4bit-AWQ \
+    "What is quantum mechanics?"

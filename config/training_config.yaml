@@ -50,7 +50,7 @@ checkpointing:
 
 # Distributed training
 distributed:
-  enabled: false  # Set to true for multi-node training
+  enabled: true  # Set to true for multi-node training
   backend: "mpi"  # Currently only MPI is supported
   
 # Logging
