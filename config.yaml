@@ -1,0 +1,29 @@
+# MLX Distributed Inference Configuration File
+# This file contains default values for command-line arguments
+
+# Model configuration
+model:
+  name: "TinyLlama/TinyLlama-1.1B-Chat-v1.0"
+  # path: "/path/to/local/model"  # Optional: override model name with local path
+
+# Generation configuration
+generation:
+  max_tokens: 128
+  # chat_template: "path/to/template.txt"  # Optional: custom chat template
+
+# Cache configuration
+cache:
+  # dir: "~/.cache/mlx_models"  # Optional: custom cache directory
+  # force_download: false
+  # clear_cache: false
+
+# Logging configuration
+logging:
+  level: "INFO"
+  # file: "logs/inference.log"  # Optional: log to file
+
+# MLX launch configuration (for reference - these are passed to mlx.launch)
+# launch:
+#   hosts: "10.85.100.220,10.85.100.221,10.85.100.222"
+#   hostfile: "hosts.json"
+#   backend: "ring"  # or "mpi"
