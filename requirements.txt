@@ -2,3 +2,6 @@ mlx
 mlx_lm
 huggingface-hub
 pyyaml
+matplotlib
+jupyter
+notebook

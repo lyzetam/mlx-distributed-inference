@@ -137,6 +137,47 @@ mlx.launch --hosts 10.85.100.220,10.85.100.221,10.85.100.222 \
 python3 distributed_inference_mlx.py --config my-config.yaml "Your prompt"
 ```
 
+## 7. Distributed Training Support
+
+### Features Implemented:
+- **Gradient Averaging**: Automatic gradient synchronization across nodes using MPI
+- **LoRA Fine-tuning**: Efficient parameter-efficient fine-tuning support
+- **Training Callbacks**: Custom callbacks for distributed training with metrics tracking
+- **Dataset Utilities**: Built-in dataset preparation, formatting, and validation
+- **Interactive Notebook**: Jupyter notebook for easy experimentation
+- **Command-line Script**: Example script for automated training
+
+### New Files:
+```
+utils/
+  ├── training_callbacks.py  # Distributed training callbacks
+  ├── data_preparation.py    # Dataset utilities
+  └── training_core.py       # Core training functions
+config/
+  └── training_config.yaml   # Training configuration
+distributed_training.ipynb   # Interactive training notebook
+examples/
+  └── train_example.py       # Command-line training example
+```
+
+### Usage:
+```bash
+# Single node training
+python examples/train_example.py
+
+# Distributed training
+mpirun --hostfile hosts.json -np 2 python examples/train_example.py --distributed
+
+# Interactive notebook
+jupyter notebook distributed_training.ipynb
+```
+
+### Key Components:
+- **DistributedTrainingCallback**: Handles gradient averaging across nodes
+- **Dataset preparation**: Automatic train/validation splitting and formatting
+- **Configuration system**: YAML-based training configuration
+- **Progress visualization**: Real-time loss plotting in notebook
+
 ## Future Improvement Suggestions
 
 While not implemented in this update, here are additional improvements that could be made:

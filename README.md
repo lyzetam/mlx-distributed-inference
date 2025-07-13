@@ -197,3 +197,105 @@ pytest
 ## Troubleshooting
 
 If MPI fails to launch or nodes hang during initialization, ensure every machine uses the **exact same** project path. In one attempt the paths differed between systems, leading to hours of confusing errors and ultimately removing the supposed master node before noticing the mismatch.
+
+## Distributed Training
+
+This project now includes support for distributed training using MLX. You can train models across multiple nodes with gradient averaging for faster training times.
+
+### Quick Start
+
+1. **Jupyter Notebook** (Recommended for interactive training):
+   ```bash
+   jupyter notebook distributed_training.ipynb
+   ```
+
+2. **Command Line Script**:
+   ```bash
+   # Single node training
+   python examples/train_example.py
+   
+   # Distributed training
+   mpirun --hostfile hosts.json -np 2 python examples/train_example.py --distributed
+   ```
+
+### Training Features
+
+- **LoRA Fine-tuning**: Efficient parameter-efficient fine-tuning
+- **Gradient Averaging**: Automatic gradient synchronization across nodes
+- **Model Caching**: Reuses downloaded models from inference
+- **Dataset Utilities**: Built-in dataset preparation and formatting
+- **Progress Tracking**: Real-time loss visualization
+- **Checkpointing**: Save and resume training
+
+### Training Configuration
+
+Configure training via `config/training_config.yaml`:
+
+```yaml
+model:
+  name: "TinyLlama/TinyLlama-1.1B-Chat-v1.0"
+
+training:
+  type: "lora"
+  lora:
+    rank: 8
+    alpha: 16
+
+hyperparameters:
+  batch_size: 2
+  learning_rate: 1e-5
+  num_iterations: 100
+
+distributed:
+  enabled: false  # Set to true for multi-node
+```
+
+### Dataset Format
+
+Prepare your dataset in JSONL format with these fields:
+```json
+{"instruction": "Question here", "response": "Answer here", "context": "Optional context"}
+```
+
+Use the built-in utilities to prepare your data:
+```python
+from utils.data_preparation import prepare_dataset
+
+dataset_info = prepare_dataset(
+    file_path="raw_data.jsonl",
+    output_dir="data",
+    val_ratio=0.2,
+    format_type="chat"
+)
+```
+
+### Distributed Training Setup
+
+1. **Configure MPI** (same as inference setup)
+2. **Ensure identical code** on all nodes
+3. **Run with MPI**:
+   ```bash
+   mlx.launch --hostfile hosts.json --backend mpi \
+     python examples/train_example.py --distributed
+   ```
+
+### Using Trained Models
+
+After training, use your adapter for inference:
+```bash
+mlx_lm.generate \
+  --model TinyLlama/TinyLlama-1.1B-Chat-v1.0 \
+  --adapter-path adapters \
+  --prompt "Your prompt here"
+```
+
+### Training Examples
+
+See the `distributed_training.ipynb` notebook for:
+- Step-by-step training walkthrough
+- Dataset preparation examples
+- Visualization of training progress
+- Distributed vs single-node comparison
+- Troubleshooting tips
+
+For more details on the training implementation, see the example from [DaveAldon's repository](https://github.com/DaveAldon/Distributed-ML-with-MLX) which inspired this implementation.
